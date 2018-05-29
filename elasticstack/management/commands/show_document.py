@@ -34,6 +34,8 @@ class Command(BaseCommand):
         "\nUse dotted path name for model and the primary key."
 
     def add_arguments(self, parser):
+        parser.add_argument('model', nargs='+', type=str)
+        parser.add_argument('pk', nargs='+', type=int)
         parser.add_argument(
             '--using',
             action='store',
@@ -44,7 +46,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            label, pk = args
+            label = options['model'][0]
+            pk = options['pk'][0]
         except (IndexError, ValueError):
             self.stderr.write("Provide the model name and primary key")
             exit(1)
